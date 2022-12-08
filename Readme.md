@@ -9,7 +9,7 @@ Make sure that git is installed on your computer. If not download it at https://
 
 Clone the project (or fork it) in a **terminal** :
 ```
-git clone --recursive https://gitlab.com/lisa-vr-course/info-h502_202223.git 
+git clone --recursive https://github.com/nathxl/INFO-H502-project.git 
 ```
 If you forgot to add `--recusive` flag (or want to update the submodules) use this:
 ```
