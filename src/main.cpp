@@ -162,43 +162,39 @@ void APIENTRY glDebugOutput(GLenum source,
 	GLenum severity,
 	GLsizei length,
 	const char* message,
-	const void* userParam)
-{
+	const void* userParam){
 	// ignore non-significant error/warning codes
 	if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 
 	std::cout << "---------------" << std::endl;
 	std::cout << "Debug message (" << id << "): " << message << std::endl;
 
-	switch (source)
-	{
-	case GL_DEBUG_SOURCE_API:             std::cout << "Source: API"; break;
-	case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   std::cout << "Source: Window System"; break;
-	case GL_DEBUG_SOURCE_SHADER_COMPILER: std::cout << "Source: Shader Compiler"; break;
-	case GL_DEBUG_SOURCE_THIRD_PARTY:     std::cout << "Source: Third Party"; break;
-	case GL_DEBUG_SOURCE_APPLICATION:     std::cout << "Source: Application"; break;
-	case GL_DEBUG_SOURCE_OTHER:           std::cout << "Source: Other"; break;
+	switch (source){
+		case GL_DEBUG_SOURCE_API:             std::cout << "Source: API"; break;
+		case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   std::cout << "Source: Window System"; break;
+		case GL_DEBUG_SOURCE_SHADER_COMPILER: std::cout << "Source: Shader Compiler"; break;
+		case GL_DEBUG_SOURCE_THIRD_PARTY:     std::cout << "Source: Third Party"; break;
+		case GL_DEBUG_SOURCE_APPLICATION:     std::cout << "Source: Application"; break;
+		case GL_DEBUG_SOURCE_OTHER:           std::cout << "Source: Other"; break;
 	} std::cout << std::endl;
 
-	switch (type)
-	{
-	case GL_DEBUG_TYPE_ERROR:               std::cout << "Type: Error"; break;
-	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: std::cout << "Type: Deprecated Behaviour"; break;
-	case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  std::cout << "Type: Undefined Behaviour"; break;
-	case GL_DEBUG_TYPE_PORTABILITY:         std::cout << "Type: Portability"; break;
-	case GL_DEBUG_TYPE_PERFORMANCE:         std::cout << "Type: Performance"; break;
-	case GL_DEBUG_TYPE_MARKER:              std::cout << "Type: Marker"; break;
-	case GL_DEBUG_TYPE_PUSH_GROUP:          std::cout << "Type: Push Group"; break;
-	case GL_DEBUG_TYPE_POP_GROUP:           std::cout << "Type: Pop Group"; break;
-	case GL_DEBUG_TYPE_OTHER:               std::cout << "Type: Other"; break;
+	switch (type){
+		case GL_DEBUG_TYPE_ERROR:               std::cout << "Type: Error"; break;
+		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: std::cout << "Type: Deprecated Behaviour"; break;
+		case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  std::cout << "Type: Undefined Behaviour"; break;
+		case GL_DEBUG_TYPE_PORTABILITY:         std::cout << "Type: Portability"; break;
+		case GL_DEBUG_TYPE_PERFORMANCE:         std::cout << "Type: Performance"; break;
+		case GL_DEBUG_TYPE_MARKER:              std::cout << "Type: Marker"; break;
+		case GL_DEBUG_TYPE_PUSH_GROUP:          std::cout << "Type: Push Group"; break;
+		case GL_DEBUG_TYPE_POP_GROUP:           std::cout << "Type: Pop Group"; break;
+		case GL_DEBUG_TYPE_OTHER:               std::cout << "Type: Other"; break;
 	} std::cout << std::endl;
 
-	switch (severity)
-	{
-	case GL_DEBUG_SEVERITY_HIGH:         std::cout << "Severity: high"; break;
-	case GL_DEBUG_SEVERITY_MEDIUM:       std::cout << "Severity: medium"; break;
-	case GL_DEBUG_SEVERITY_LOW:          std::cout << "Severity: low"; break;
-	case GL_DEBUG_SEVERITY_NOTIFICATION: std::cout << "Severity: notification"; break;
+	switch (severity){
+		case GL_DEBUG_SEVERITY_HIGH:         std::cout << "Severity: high"; break;
+		case GL_DEBUG_SEVERITY_MEDIUM:       std::cout << "Severity: medium"; break;
+		case GL_DEBUG_SEVERITY_LOW:          std::cout << "Severity: low"; break;
+		case GL_DEBUG_SEVERITY_NOTIFICATION: std::cout << "Severity: notification"; break;
 	} std::cout << std::endl;
 	std::cout << std::endl;
 }
@@ -233,15 +229,14 @@ int main(int argc, char* argv[]){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	#ifndef NDEBUG
-	//create a debug context to help with Debugging
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+		//create a debug context to help with Debugging
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 	#endif
 	
 
 	//Create the window
 	GLFWwindow* window = glfwCreateWindow(width, height, "Exercise 10", nullptr, nullptr);
-	if (window == NULL)
-	{
+	if (window == NULL){
 		glfwTerminate();
 		throw std::runtime_error("Failed to create GLFW window\n");
 	}
@@ -249,35 +244,41 @@ int main(int argc, char* argv[]){
 	glfwMakeContextCurrent(window);
 
 	//load openGL function
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
 		throw std::runtime_error("Failed to initialize GLAD");
 	}
 
 	glEnable(GL_DEPTH_TEST);
 
 	#ifndef NDEBUG
-	int flags;
-	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-	{
-		glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(glDebugOutput, nullptr);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-	}
+		int flags;
+		glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT){
+			glEnable(GL_DEBUG_OUTPUT);
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			glDebugMessageCallback(glDebugOutput, nullptr);
+			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+		}
 	#endif
 
 
 	Shader shader(sourceV, sourceF);
 	Shader cubeMapShader = Shader(sourceVCubeMap, sourceFCubeMap);
 
-	char path[] = PATH_TO_OBJECTS "/sphere_smooth.obj";
+	char path1[] = PATH_TO_OBJECTS "/sphere_smooth.obj";
+	char path2[] = PATH_TO_OBJECTS "/sphere_coarse.obj";
 
-	Object sphere1(path);
+	Object sphere1(path1);
 	sphere1.makeObject(shader);
 
-	
+	sphere1.model = glm::translate(sphere1.model, glm::vec3(0.0, 0.0, -20.0));
+	glm::mat4 inverseModel = glm::transpose(glm::inverse(sphere1.model));
+
+	Object sphere2(path1);
+	sphere2.makeObject(shader);
+
+	sphere2.model = glm::scale(sphere2.model, glm::vec3(3.0, 3.0, 3.0));
+
 
 	char pathCube[] = PATH_TO_OBJECTS "/cube.obj";
 	Object cubeMap(pathCube);
@@ -301,10 +302,6 @@ int main(int argc, char* argv[]){
 
 
 	glm::vec3 light_pos = glm::vec3(1.0, 2.0, 1.5);
-	glm::mat4 model = glm::mat4(1.0);
-	model = glm::translate(model, glm::vec3(0.0, 0.0, -20.0));
-	// model = glm::scale(model, glm::vec3(0.5, 0.5, 0.5));
-	glm::mat4 inverseModel = glm::transpose(glm::inverse(model));
 	glm::mat4 view = camera.GetViewMatrix();
 	glm::mat4 perspective = camera.GetProjectionMatrix();
 
@@ -373,9 +370,6 @@ int main(int argc, char* argv[]){
 	
 
 	while (!glfwWindowShouldClose(window)) {
-		// clock_t ticks = clock();
-		// double time = ticks * 1000.0 / CLOCKS_PER_SEC;
-		// std::cout << "time : " << sin(time / 1000) << std::endl;
 
 		processInput(window);
 		view = camera.GetViewMatrix();
@@ -384,15 +378,15 @@ int main(int argc, char* argv[]){
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// model = glm::rotate(model, glm::radians((float)(1.0)), glm::vec3(1.0, 1.0, 0.0));
-		model = glm::translate(model, glm::vec3(0.0, 0.0, 20.0));
-		model = glm::rotate(model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
-		model = glm::translate(model, glm::vec3(0.0, 0.0, -20.0));
+		// sphere1.model = glm::rotate(sphere1.model, glm::radians((float)(1.0)), glm::vec3(1.0, 1.0, 0.0));
+		sphere1.model = glm::translate(sphere1.model, glm::vec3(0.0, 0.0, 20.0));
+		sphere1.model = glm::rotate(sphere1.model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
+		sphere1.model = glm::translate(sphere1.model, glm::vec3(0.0, 0.0, -20.0));
 		
 
 		shader.use();
 
-		shader.setMatrix4("M", model);
+		shader.setMatrix4("M", sphere1.model);
 		shader.setMatrix4("itM", inverseModel);
 		shader.setMatrix4("V", view);
 		shader.setMatrix4("P", perspective);
@@ -410,6 +404,10 @@ int main(int argc, char* argv[]){
 
 		glDepthFunc(GL_LEQUAL);
 		sphere1.draw();
+
+		shader.setMatrix4("M", sphere2.model);
+		// shader.setMatrix4("itM", glm::inverseTranspose(sphere2.model));
+		sphere2.draw();
 
 
 		cubeMapShader.use();
