@@ -265,8 +265,8 @@ int main(int argc, char* argv[]){
 	Shader shader(sourceV, sourceF);
 	Shader cubeMapShader = Shader(sourceVCubeMap, sourceFCubeMap);
 
-	char path1[] = PATH_TO_OBJECTS "/sphere_smooth.obj";
-	char path2[] = PATH_TO_OBJECTS "/sphere_coarse.obj";
+	char path1[] = "../../src/objects/sphere_smooth.obj";
+	char path2[] = "../../src/objects/sphere_coarse.obj";
 
 	Object sphere1(path1);
 	sphere1.makeObject(shader);
@@ -280,7 +280,7 @@ int main(int argc, char* argv[]){
 	sphere2.model = glm::scale(sphere2.model, glm::vec3(3.0, 3.0, 3.0));
 
 
-	char pathCube[] = PATH_TO_OBJECTS "/cube.obj";
+	char pathCube[] = "../../src/objects/cube.obj";
 	Object cubeMap(pathCube);
 	cubeMap.makeObject(cubeMapShader);
 
@@ -303,7 +303,7 @@ int main(int argc, char* argv[]){
 
 	glm::vec3 light_pos = glm::vec3(1.0, 2.0, 1.5);
 	glm::mat4 view = camera.GetViewMatrix();
-	glm::mat4 perspective = camera.GetProjectionMatrix();
+	glm::mat4 perspective = camera.GetProjectionMatrix(45.0, 16./9., 0.01, 100.0);//get the perspective in 16/9 ratio 
 
 	float ambient = 0.1;
 	float diffuse = 0.5;
@@ -340,7 +340,7 @@ int main(int argc, char* argv[]){
 
 	//stbi_set_flip_vertically_on_load(true);
 
-	std::string pathToCubeMap = PATH_TO_TEXTURE "/cubemaps/space/";
+	std::string pathToCubeMap = "../../src/textures/cubemaps/space/";
 
 	std::map<std::string, GLenum> facesToLoad = {
 		{pathToCubeMap + "posx.jpg",GL_TEXTURE_CUBE_MAP_POSITIVE_X},
