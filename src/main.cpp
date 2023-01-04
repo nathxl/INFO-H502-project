@@ -65,7 +65,7 @@ int main(int argc, char* argv[]){
 	std::cout << "Welcome to our project : " << std::endl;
 	WindowManager wm;
 	wm.init();
-	
+
 
 	// -----------------------------------------------------
 	// Earth texture 1
@@ -118,6 +118,549 @@ int main(int argc, char* argv[]){
     stbi_set_flip_vertically_on_load(true);
 
     data = stbi_load("../../src/textures/planets/earth2.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 1
+    // -----------------------------------------------------
+
+	GLuint sunTexture1;
+
+    glGenTextures(1, &sunTexture1);
+	glBindTexture(GL_TEXTURE_2D, sunTexture1);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-001.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 2
+    // -----------------------------------------------------
+
+	GLuint sunTexture2;
+
+    glGenTextures(1, &sunTexture2);
+	glBindTexture(GL_TEXTURE_2D, sunTexture2);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-002.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 3
+    // -----------------------------------------------------
+
+	GLuint sunTexture3;
+
+    glGenTextures(1, &sunTexture3);
+	glBindTexture(GL_TEXTURE_2D, sunTexture3);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-003.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 4
+    // -----------------------------------------------------
+
+	GLuint sunTexture4;
+
+    glGenTextures(1, &sunTexture4);
+	glBindTexture(GL_TEXTURE_2D, sunTexture4);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-004.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+	// -----------------------------------------------------
+	// sun texture 5
+    // -----------------------------------------------------
+
+	GLuint sunTexture5;
+
+    glGenTextures(1, &sunTexture5);
+	glBindTexture(GL_TEXTURE_2D, sunTexture5);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-005.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 6
+    // -----------------------------------------------------
+
+	GLuint sunTexture6;
+
+    glGenTextures(1, &sunTexture6);
+	glBindTexture(GL_TEXTURE_2D, sunTexture6);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-006.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 7
+    // -----------------------------------------------------
+
+	GLuint sunTexture7;
+
+    glGenTextures(1, &sunTexture7);
+	glBindTexture(GL_TEXTURE_2D, sunTexture7);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-007.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 8
+    // -----------------------------------------------------
+
+	GLuint sunTexture8;
+
+    glGenTextures(1, &sunTexture8);
+	glBindTexture(GL_TEXTURE_2D, sunTexture8);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-008.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 9
+    // -----------------------------------------------------
+
+	GLuint sunTexture9;
+
+    glGenTextures(1, &sunTexture9);
+	glBindTexture(GL_TEXTURE_2D, sunTexture9);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-009.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 10
+    // -----------------------------------------------------
+
+	GLuint sunTexture10;
+
+    glGenTextures(1, &sunTexture10);
+	glBindTexture(GL_TEXTURE_2D, sunTexture10);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-010.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+
+	// -----------------------------------------------------
+	// sun texture 11
+    // -----------------------------------------------------
+
+	GLuint sunTexture11;
+
+    glGenTextures(1, &sunTexture11);
+	glBindTexture(GL_TEXTURE_2D, sunTexture11);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-011.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 12
+    // -----------------------------------------------------
+
+	GLuint sunTexture12;
+
+    glGenTextures(1, &sunTexture12);
+	glBindTexture(GL_TEXTURE_2D, sunTexture12);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-012.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 13
+    // -----------------------------------------------------
+
+	GLuint sunTexture13;
+
+    glGenTextures(1, &sunTexture13);
+	glBindTexture(GL_TEXTURE_2D, sunTexture13);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-013.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+
+	// -----------------------------------------------------
+	// sun texture 14
+    // -----------------------------------------------------
+
+	GLuint sunTexture14;
+
+    glGenTextures(1, &sunTexture14);
+	glBindTexture(GL_TEXTURE_2D, sunTexture14);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-014.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+
+	// -----------------------------------------------------
+	// sun texture 15
+    // -----------------------------------------------------
+
+	GLuint sunTexture15;
+
+    glGenTextures(1, &sunTexture15);
+	glBindTexture(GL_TEXTURE_2D, sunTexture15);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-015.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 16
+    // -----------------------------------------------------
+
+	GLuint sunTexture16;
+
+    glGenTextures(1, &sunTexture16);
+	glBindTexture(GL_TEXTURE_2D, sunTexture16);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-016.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 17
+    // -----------------------------------------------------
+
+	GLuint sunTexture17;
+
+    glGenTextures(1, &sunTexture17);
+	glBindTexture(GL_TEXTURE_2D, sunTexture17);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-017.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+
+	// -----------------------------------------------------
+	// sun texture 18
+    // -----------------------------------------------------
+
+	GLuint sunTexture18;
+
+    glGenTextures(1, &sunTexture18);
+	glBindTexture(GL_TEXTURE_2D, sunTexture18);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-018.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 19
+    // -----------------------------------------------------
+
+	GLuint sunTexture19;
+
+    glGenTextures(1, &sunTexture19);
+	glBindTexture(GL_TEXTURE_2D, sunTexture19);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-019.jpg", &width, &height, &nrChannels, 0);
+    if (data){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    } else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+
+	// -----------------------------------------------------
+	// sun texture 20
+    // -----------------------------------------------------
+
+	GLuint sunTexture20;
+
+    glGenTextures(1, &sunTexture20);
+	glBindTexture(GL_TEXTURE_2D, sunTexture20);
+	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    data = stbi_load("../../src/textures/planets/ezgif-frame-020.jpg", &width, &height, &nrChannels, 0);
     if (data){
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -190,12 +733,15 @@ int main(int argc, char* argv[]){
 	// Sun Initialization
 	// -----------------------------------------------------
 
-	float sunAmbient = 0.9;
+	float sunAmbient = 0.5;
 	float sunDiffuse = 0.9;
 	float sunSpecular = 0.8;
 	glm::vec3 sunColour = glm::vec3(0.9f, 0.5, 0.1);
 
-	Shader sunShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
+	// Shader sunShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
+	Shader sunShader = Shader(shaders.TextureVertexShader, shaders.TextureFragmentShader);
+
+
 	sunShader.use();
 	sunShader.setFloat("shininess", 32.0f);
 	sunShader.setVector3f("materialColour", sunColour);
@@ -267,6 +813,7 @@ int main(int argc, char* argv[]){
 
 
 	while (!glfwWindowShouldClose(wm.window)) {
+		animationFrame++;
 		animationFrame++;
 		if (animationFrame > 100){
 			animationFrame = 0;
@@ -341,12 +888,7 @@ int main(int argc, char* argv[]){
 		earthShader.setMatrix4("P", perspective);
 		earthShader.setVector3f("u_view_pos", wm.camera.Position);
 
-		if (animationFrame < 50){
-			glBindTexture(GL_TEXTURE_2D, earthTexture1);
-		} else {
-			glBindTexture(GL_TEXTURE_2D, earthTexture2);
-		}
-        
+		glBindTexture(GL_TEXTURE_2D, earthTexture2);
 		
 		earth.draw();
 
@@ -381,6 +923,49 @@ int main(int argc, char* argv[]){
 		sunShader.setMatrix4("V", view);
 		sunShader.setMatrix4("P", perspective);
 		sunShader.setVector3f("u_view_pos", wm.camera.Position);
+		glBindTexture(GL_TEXTURE_2D, sunTexture1);
+		if (animationFrame <= 5){
+			glBindTexture(GL_TEXTURE_2D, sunTexture1);
+		} else if(animationFrame > 5 && animationFrame <= 10) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture2);
+		} else if(animationFrame > 10 && animationFrame <= 15) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture3);
+		} else if(animationFrame > 15 && animationFrame <= 20) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture4);
+		} else if(animationFrame > 20 && animationFrame <= 25) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture5);
+		} else if(animationFrame > 25 && animationFrame <= 30) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture6);
+		} else if(animationFrame > 30 && animationFrame <= 35) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture7);
+		} else if(animationFrame > 35 && animationFrame <= 40) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture8);
+		} else if(animationFrame > 40 && animationFrame <= 45) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture9);
+		} else if(animationFrame > 45 && animationFrame <= 50) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture10);
+		} else if(animationFrame > 50 && animationFrame <= 55) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture11);
+		} else if(animationFrame > 55 && animationFrame <= 60) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture12);
+		} else if(animationFrame > 60 && animationFrame <= 65) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture13);
+		} else if(animationFrame > 65 && animationFrame <= 70) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture14);
+		} else if(animationFrame > 70 && animationFrame <= 75) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture15);
+		} else if(animationFrame > 75 && animationFrame <= 80) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture16);
+		} else if(animationFrame > 80 && animationFrame <= 85) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture17);
+		} else if(animationFrame > 85 && animationFrame <= 90) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture18);
+		} else if(animationFrame > 90 && animationFrame <= 95) {
+			glBindTexture(GL_TEXTURE_2D, sunTexture19);
+		} else {
+			glBindTexture(GL_TEXTURE_2D, sunTexture20);
+		}
+
 		sun.draw();
 
 		// --------------------------------------------
