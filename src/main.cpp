@@ -22,6 +22,7 @@
 #include "shader.h"
 #include "shaders.h"
 #include "object.h"
+#include "windowManager.h"
 
 #include <math.h>
 #include <time.h>
@@ -128,10 +129,13 @@ void APIENTRY glDebugOutput(GLenum source,
 
 int main(int argc, char* argv[]){
 
+	WindowManager wm;
+
 
 	// -----------------------------------------------------
 	// Initialization
 	// -----------------------------------------------------
+
 
 	std::cout << "Welcome to exercice 10: " << std::endl;
 	std::cout << "Implement refraction on an object\n" << std::endl;
