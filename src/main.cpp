@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
 	// Earth Initialization
 	// -----------------------------------------------------
 
-	float earthAmbient = 0.1;
+	float earthAmbient = 0.2;
 	float earthDiffuse = 0.5;
 	float earthSpecular = 0.8;
 	glm::vec3 earthColour = glm::vec3(0.5f, 0.6, 0.8);
@@ -91,8 +91,39 @@ int main(int argc, char* argv[]){
 	char path_to_sphere_obj[] = "../../src/objects/sphere_smooth.obj";
 	Object earth(path_to_sphere_obj);
 	earth.makeObject(earthShader);
-	earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -20.0));
+	earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -10.0));
 	glm::mat4 inverseModel = glm::transpose(glm::inverse(earth.model));
+
+
+	// -----------------------------------------------------
+	// Moon Initialization
+	// -----------------------------------------------------
+
+	float moonAmbient = 0.2;
+	float moonDiffuse = 0.5;
+	float moonSpecular = 0.8;
+	glm::vec3 moonColour = glm::vec3(0.6f, 0.6, 0.6);
+
+	// Shader earthShader = Shader(celestialBodiesVertexShader, celestialBodiesFragmentShader);
+
+	Shader moonShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
+
+	moonShader.use();
+	moonShader.setFloat("shininess", 32.0f);
+	moonShader.setVector3f("materialColour", moonColour);
+	moonShader.setFloat("light.ambient_strength", moonAmbient);
+	moonShader.setFloat("light.diffuse_strength", moonDiffuse);
+	moonShader.setFloat("light.specular_strength", moonSpecular);
+	moonShader.setFloat("light.constant", 1.0);
+	moonShader.setFloat("light.linear", 0.14);
+	moonShader.setFloat("light.quadratic", 0.07);
+	moonShader.setFloat("refractionIndice", 1.52);
+	
+	Object moon(path_to_sphere_obj);
+	moon.makeObject(moonShader);
+	moon.model = glm::translate(moon.model, glm::vec3(0.0, 0.0, 10.0));
+	inverseModel = glm::transpose(glm::inverse(moon.model));
+	
 
 
 	// -----------------------------------------------------
@@ -199,9 +230,9 @@ int main(int argc, char* argv[]){
 		// Earth Operations
 		// --------------------------------------------
 
-		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, 20.0));
+		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, 10.0));
 		earth.model = glm::rotate(earth.model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
-		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -20.0));
+		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -10.0));
 		earthShader.use();
 		earthShader.setMatrix4("M", earth.model);
 		earthShader.setMatrix4("itM", inverseModel);
@@ -209,6 +240,28 @@ int main(int argc, char* argv[]){
 		earthShader.setMatrix4("P", perspective);
 		earthShader.setVector3f("u_view_pos", wm.camera.Position);
 		earth.draw();
+
+		// --------------------------------------------
+		// Moon Operations
+		// --------------------------------------------
+
+		// first transformations to sync with earth around sun
+		moon.model = glm::translate(moon.model, glm::vec3(0.0, 0.0, -10.0));
+		moon.model = glm::rotate(moon.model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
+		moon.model = glm::translate(moon.model, glm::vec3(0.0, 0.0, 10.0));
+
+		// moon's own rotation around earth
+		// TODO
+
+		moon.model = glm::scale(moon.model, glm::vec3(0.5, 0.5, 0.5));
+		moonShader.use();
+		moonShader.setMatrix4("M", moon.model);
+		moonShader.setMatrix4("itM", inverseModel);
+		moonShader.setMatrix4("V", view);
+		moonShader.setMatrix4("P", perspective);
+		moonShader.setVector3f("u_view_pos", wm.camera.Position);
+		moon.draw();
+		moon.model = glm::scale(moon.model, glm::vec3(2.0, 2.0, 2.0));
 
 		// --------------------------------------------
 		// Sun Operations
