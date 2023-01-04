@@ -75,30 +75,6 @@ const std::string sourceV =
 
 
 
-/*
-const std::string sourceF =
-"#version 400 core\n"
-"out vec4 FragColor;\n"
-"precision mediump float; \n"
-
-"in vec3 v_frag_coord; \n"
-"in vec3 v_normal; \n"
-
-"uniform vec3 u_view_pos; \n"
-
-"uniform samplerCube cubemapSampler; \n"
-"uniform float refractionIndice;\n"
-
-"void main() { \n"
-"float ratio = 1.00 / refractionIndice;\n"
-"vec3 N = normalize(v_normal);\n"
-"vec3 V = normalize(u_view_pos - v_frag_coord); \n"
-"vec3 R = refract(-V,N,ratio); \n"
-"FragColor = texture(cubemapSampler,R); \n"
-"} \n";
-*/
-
-
 const std::string sourceF = "#version 330 core\n"
 		"out vec4 FragColor;\n"
 		"precision mediump float; \n"
@@ -316,21 +292,21 @@ int main(int argc, char* argv[]){
 
 
 	// -----------------------------------------------------
-	// Sphere 1 operations
+	// Earth Initialization
 	// -----------------------------------------------------
 
-	float ambient = 0.1;
-	float diffuse = 0.5;
-	float specular = 0.8;
-	glm::vec3 materialColour = glm::vec3(0.5f, 0.6, 0.8);
+	float earthAmbient = 0.1;
+	float earthDiffuse = 0.5;
+	float earthSpecular = 0.8;
+	glm::vec3 earthColour = glm::vec3(0.5f, 0.6, 0.8);
 
 	Shader earthShader = Shader(sourceV, sourceF);
 	earthShader.use();
 	earthShader.setFloat("shininess", 32.0f);
-	earthShader.setVector3f("materialColour", materialColour);
-	earthShader.setFloat("light.ambient_strength", ambient);
-	earthShader.setFloat("light.diffuse_strength", diffuse);
-	earthShader.setFloat("light.specular_strength", specular);
+	earthShader.setVector3f("materialColour", earthColour);
+	earthShader.setFloat("light.ambient_strength", earthAmbient);
+	earthShader.setFloat("light.diffuse_strength", earthDiffuse);
+	earthShader.setFloat("light.specular_strength", earthSpecular);
 	earthShader.setFloat("light.constant", 1.0);
 	earthShader.setFloat("light.linear", 0.14);
 	earthShader.setFloat("light.quadratic", 0.07);
@@ -344,16 +320,33 @@ int main(int argc, char* argv[]){
 
 
 	// -----------------------------------------------------
-	// Sphere 2 opeartions
+	// Sun Initialization
 	// -----------------------------------------------------
 
+	float sunAmbient = 0.9;
+	float sunDiffuse = 0.9;
+	float sunSpecular = 0.8;
+	glm::vec3 sunColour = glm::vec3(0.9f, 0.5, 0.1);
+
+	Shader sunShader = Shader(sourceV, sourceF);
+	sunShader.use();
+	sunShader.setFloat("shininess", 32.0f);
+	sunShader.setVector3f("materialColour", sunColour);
+	sunShader.setFloat("light.ambient_strength", sunAmbient);
+	sunShader.setFloat("light.diffuse_strength", sunDiffuse);
+	sunShader.setFloat("light.specular_strength", sunSpecular);
+	sunShader.setFloat("light.constant", 1.0);
+	sunShader.setFloat("light.linear", 0.14);
+	sunShader.setFloat("light.quadratic", 0.07);
+	sunShader.setFloat("refractionIndice", 1.52);
+
 	Object sun(path_to_sphere_obj);
-	sun.makeObject(earthShader);
+	sun.makeObject(sunShader);
 	sun.model = glm::scale(sun.model, glm::vec3(3.0, 3.0, 3.0));
 
 
 	// -----------------------------------------------------
-	// CubeMap operations
+	// CubeMap Initialization
 	// -----------------------------------------------------
 
 	Shader cubeMapShader = Shader(sourceVCubeMap, sourceFCubeMap);
@@ -446,7 +439,7 @@ int main(int argc, char* argv[]){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// --------------------------------------------
-		// sphere 1 operations
+		// Earth Operations
 		// --------------------------------------------
 
 		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, 20.0));
@@ -461,14 +454,19 @@ int main(int argc, char* argv[]){
 		earth.draw();
 
 		// --------------------------------------------
-		// sphere 2 operations
+		// Sun Operations
 		// --------------------------------------------
 
-		earthShader.setMatrix4("M", sun.model);
+		sunShader.use();
+		sunShader.setMatrix4("M", sun.model);
+		sunShader.setMatrix4("itM", inverseModel);
+		sunShader.setMatrix4("V", view);
+		sunShader.setMatrix4("P", perspective);
+		sunShader.setVector3f("u_view_pos", camera.Position);
 		sun.draw();
 
 		// --------------------------------------------
-		// cubeMap operations
+		// CubeMap Operations
 		// --------------------------------------------
 
 		glActiveTexture(GL_TEXTURE0);
