@@ -91,7 +91,7 @@ int main(int argc, char* argv[]){
 	char path_to_sphere_obj[] = "../../src/objects/sphere_smooth.obj";
 	Object earth(path_to_sphere_obj);
 	earth.makeObject(earthShader);
-	earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -10.0));
+	// earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -10.0));
 	glm::mat4 inverseModel = glm::transpose(glm::inverse(earth.model));
 
 
@@ -121,7 +121,7 @@ int main(int argc, char* argv[]){
 	
 	Object moon(path_to_sphere_obj);
 	moon.makeObject(moonShader);
-	moon.model = glm::translate(moon.model, glm::vec3(0.0, 0.0, 10.0));
+	// moon.model = glm::translate(moon.model, glm::vec3(0.0, 0.0, -10.0));
 	inverseModel = glm::transpose(glm::inverse(moon.model));
 	
 
@@ -226,13 +226,47 @@ int main(int argc, char* argv[]){
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+		// --------------------------------------------
+		// Vector Operations
+		// --------------------------------------------
+
+		// v1 : sun-earth verctor
+		// v2 : earth-moon vector
+
+		// spherical to cartesian coordinates of v1 and v2
+		double r1 = 10.0;
+		double phi1 = now;
+		double x1 = r1 * std::cos(phi1);
+		double y1 = r1 * std::sin(phi1);
+
+		double r2 = 3.0;
+		double phi2 = 3*now;
+		double x2 = r2 * std::cos(phi2);
+		double y2 = r2 * std::sin(phi2);
+
+		// vr = v1 + v2
+		double xr = x1 + x2;
+		double yr = y1 + y2;
+
+		// cartesian to spherical coordinates of vr
+
+		double phir;
+		if (std::signbit(yr)){
+			phir = - std::acos(xr / std::sqrt(xr*xr + yr*yr));
+		} else {
+			phir = + std::acos(xr / std::sqrt(xr*xr + yr*yr));
+		}
+
+		double rr = std::sqrt(xr*xr + yr*yr);
+
 		// --------------------------------------------
 		// Earth Operations
 		// --------------------------------------------
 
-		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, 10.0));
-		earth.model = glm::rotate(earth.model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
-		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -10.0));
+		
+		// earth.model = glm::rotate(earth.model, glm::radians((float)(1.0)), glm::vec3(0.0, now, 0.0));
+		earth.model = glm::translate(earth.model, glm::vec3(-x1, 0.0, y1));
 		earthShader.use();
 		earthShader.setMatrix4("M", earth.model);
 		earthShader.setMatrix4("itM", inverseModel);
@@ -240,19 +274,14 @@ int main(int argc, char* argv[]){
 		earthShader.setMatrix4("P", perspective);
 		earthShader.setVector3f("u_view_pos", wm.camera.Position);
 		earth.draw();
+		earth.model = glm::translate(earth.model, glm::vec3(x1, 0.0, -y1));
 
 		// --------------------------------------------
 		// Moon Operations
 		// --------------------------------------------
+		
 
-		// first transformations to sync with earth around sun
-		moon.model = glm::translate(moon.model, glm::vec3(0.0, 0.0, -10.0));
-		moon.model = glm::rotate(moon.model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
-		moon.model = glm::translate(moon.model, glm::vec3(0.0, 0.0, 10.0));
-
-		// moon's own rotation around earth
-		// TODO
-
+		moon.model = glm::translate(moon.model, glm::vec3(-xr, 0.0, yr));
 		moon.model = glm::scale(moon.model, glm::vec3(0.5, 0.5, 0.5));
 		moonShader.use();
 		moonShader.setMatrix4("M", moon.model);
@@ -262,6 +291,8 @@ int main(int argc, char* argv[]){
 		moonShader.setVector3f("u_view_pos", wm.camera.Position);
 		moon.draw();
 		moon.model = glm::scale(moon.model, glm::vec3(2.0, 2.0, 2.0));
+		moon.model = glm::translate(moon.model, glm::vec3(xr, 0.0, -yr));
+
 
 		// --------------------------------------------
 		// Sun Operations
