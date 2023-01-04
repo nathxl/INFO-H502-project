@@ -70,6 +70,8 @@ void my_fps(double now);
 // DEBUG
 // ---------------------------------------------------------------------------
 
+
+/*
 #ifndef NDEBUG
 void APIENTRY glDebugOutput(GLenum source,
 	GLenum type,
@@ -115,7 +117,7 @@ void APIENTRY glDebugOutput(GLenum source,
 }
 #endif
 
-
+*/
 
 
 // ---------------------------------------------------------------------------
