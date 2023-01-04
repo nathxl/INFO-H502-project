@@ -28,6 +28,7 @@
 
 
 
+
 // ---------------------------------------------------------------------------
 // GLOBAL VARIABLES
 // ---------------------------------------------------------------------------
@@ -74,6 +75,7 @@ const std::string sourceV =
 
 
 
+/*
 const std::string sourceF =
 "#version 400 core\n"
 "out vec4 FragColor;\n"
@@ -94,7 +96,54 @@ const std::string sourceF =
 "vec3 R = refract(-V,N,ratio); \n"
 "FragColor = texture(cubemapSampler,R); \n"
 "} \n";
+*/
 
+
+const std::string sourceF = "#version 330 core\n"
+		"out vec4 FragColor;\n"
+		"precision mediump float; \n"
+
+		"in vec3 v_frag_coord; \n"
+		"in vec3 v_normal; \n"
+
+		"uniform vec3 u_view_pos; \n"
+
+		//In GLSL you can use structures to better organize your code
+		//light
+		"struct Light{\n" 
+		"vec3 light_pos; \n"
+		"float ambient_strength; \n"
+		"float diffuse_strength; \n"
+		"float specular_strength; \n"
+		//attenuation factor
+		"float constant;\n"
+		"float linear;\n"
+		"float quadratic;\n"
+		"};\n"
+		"uniform Light light;"
+
+		"uniform float shininess; \n"
+		"uniform vec3 materialColour; \n"
+
+
+		"float specularCalculation(vec3 N, vec3 L, vec3 V ){ \n"
+			"vec3 R = reflect (-L,N);  \n " //reflect (-L,N) is  equivalent to //max (2 * dot(N,L) * N - L , 0.0) ;
+			"float cosTheta = dot(R , V); \n"
+			"float spec = pow(max(cosTheta,0.0), 32.0); \n"
+			"return light.specular_strength * spec;\n"
+		"}\n"
+
+		"void main() { \n"
+		"vec3 N = normalize(v_normal);\n"
+		"vec3 L = normalize(light.light_pos - v_frag_coord) ; \n"
+		"vec3 V = normalize(u_view_pos - v_frag_coord); \n"
+		"float specular = specularCalculation( N, L, V); \n"
+		"float diffuse = light.diffuse_strength * max(dot(N,L),0.0);\n"
+		"float distance = length(light.light_pos - v_frag_coord);"
+		"float attenuation = 1 / (light.constant + light.linear * distance + light.quadratic * distance * distance);"
+		"float light = light.ambient_strength + attenuation * (diffuse + specular); \n"
+		"FragColor = vec4(materialColour * vec3(light), 1.0); \n"
+		"} \n";
 
 
 const std::string sourceVCubeMap =
@@ -146,7 +195,7 @@ GLuint compileShader(std::string shaderCode, GLenum shaderType);
 GLuint compileProgram(GLuint vertexShader, GLuint fragmentShader);
 void processInput(GLFWwindow* window);
 void loadCubemapFace(const char* file, const GLenum& targetCube);
-Camera camera(glm::vec3(0.0, 0.0, 0.1));
+Camera camera(glm::vec3(0.0, 0.0, 10.0));
 
 
 
@@ -215,6 +264,10 @@ void APIENTRY glDebugOutput(GLenum source,
 int main(int argc, char* argv[]){
 
 
+	// -----------------------------------------------------
+	// Initialization
+	// -----------------------------------------------------
+
 	std::cout << "Welcome to exercice 10: " << std::endl;
 	std::cout << "Implement refraction on an object\n" << std::endl;
 
@@ -262,69 +315,51 @@ int main(int argc, char* argv[]){
 	#endif
 
 
-	Shader shader(sourceV, sourceF);
-	Shader cubeMapShader = Shader(sourceVCubeMap, sourceFCubeMap);
-
-	char path1[] = "../../src/objects/sphere_smooth.obj";
-	char path2[] = "../../src/objects/sphere_coarse.obj";
-
-	Object sphere1(path1);
-	sphere1.makeObject(shader);
-
-	sphere1.model = glm::translate(sphere1.model, glm::vec3(0.0, 0.0, -20.0));
-	glm::mat4 inverseModel = glm::transpose(glm::inverse(sphere1.model));
-
-	Object sphere2(path1);
-	sphere2.makeObject(shader);
-
-	sphere2.model = glm::scale(sphere2.model, glm::vec3(3.0, 3.0, 3.0));
-
-
-	char pathCube[] = "../../src/objects/cube.obj";
-	Object cubeMap(pathCube);
-	cubeMap.makeObject(cubeMapShader);
-
-
-	double prev = 0;
-	int deltaFrame = 0;
-	//fps function
-	auto fps = [&](double now) {
-		double deltaTime = now - prev;
-		deltaFrame++;
-		if (deltaTime > 0.5) {
-			prev = now;
-			const double fpsCount = (double)deltaFrame / deltaTime;
-			deltaFrame = 0;
-			std::cout << "\r FPS: " << fpsCount;
-			std::cout.flush();
-		}
-	};
-
-
-	glm::vec3 light_pos = glm::vec3(1.0, 2.0, 1.5);
-	glm::mat4 view = camera.GetViewMatrix();
-	glm::mat4 perspective = camera.GetProjectionMatrix(45.0, 16./9., 0.01, 100.0);//get the perspective in 16/9 ratio 
+	// -----------------------------------------------------
+	// Sphere 1 operations
+	// -----------------------------------------------------
 
 	float ambient = 0.1;
 	float diffuse = 0.5;
 	float specular = 0.8;
-
 	glm::vec3 materialColour = glm::vec3(0.5f, 0.6, 0.8);
 
-	//Rendering
+	Shader earthShader = Shader(sourceV, sourceF);
+	earthShader.use();
+	earthShader.setFloat("shininess", 32.0f);
+	earthShader.setVector3f("materialColour", materialColour);
+	earthShader.setFloat("light.ambient_strength", ambient);
+	earthShader.setFloat("light.diffuse_strength", diffuse);
+	earthShader.setFloat("light.specular_strength", specular);
+	earthShader.setFloat("light.constant", 1.0);
+	earthShader.setFloat("light.linear", 0.14);
+	earthShader.setFloat("light.quadratic", 0.07);
+	earthShader.setFloat("refractionIndice", 1.52);
+	
+	char path_to_sphere_obj[] = "../../src/objects/sphere_smooth.obj";
+	Object earth(path_to_sphere_obj);
+	earth.makeObject(earthShader);
+	earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -20.0));
+	glm::mat4 inverseModel = glm::transpose(glm::inverse(earth.model));
 
-	shader.use();
-	shader.setFloat("shininess", 32.0f);
-	shader.setVector3f("materialColour", materialColour);
-	shader.setFloat("light.ambient_strength", ambient);
-	shader.setFloat("light.diffuse_strength", diffuse);
-	shader.setFloat("light.specular_strength", specular);
-	shader.setFloat("light.constant", 1.0);
-	shader.setFloat("light.linear", 0.14);
-	shader.setFloat("light.quadratic", 0.07);
+
+	// -----------------------------------------------------
+	// Sphere 2 opeartions
+	// -----------------------------------------------------
+
+	Object sun(path_to_sphere_obj);
+	sun.makeObject(earthShader);
+	sun.model = glm::scale(sun.model, glm::vec3(3.0, 3.0, 3.0));
 
 
+	// -----------------------------------------------------
+	// CubeMap operations
+	// -----------------------------------------------------
 
+	Shader cubeMapShader = Shader(sourceVCubeMap, sourceFCubeMap);
+	char pathCube[] = "../../src/objects/cube.obj";
+	Object cubeMap(pathCube);
+	cubeMap.makeObject(cubeMapShader);
 
 	GLuint cubeMapTexture;
 	glGenTextures(1, &cubeMapTexture);
@@ -350,79 +385,114 @@ int main(int argc, char* argv[]){
 		{pathToCubeMap + "negy.jpg",GL_TEXTURE_CUBE_MAP_NEGATIVE_Y},
 		{pathToCubeMap + "negz.jpg",GL_TEXTURE_CUBE_MAP_NEGATIVE_Z},
 	};
+
 	//load the six faces
 	for (std::pair<std::string, GLenum> pair : facesToLoad) {
 		loadCubemapFace(pair.first.c_str(), pair.second);
 	}
 
-	/*
-	Refraction indices:
-	Air:      1.0
-	Water:    1.33
-	Ice:      1.309
-	Glass:    1.52
-	Diamond:  2.42
-	*/
-	shader.setFloat("refractionIndice", 1.52);
+
+	// -----------------------------------------------------
+	// FPS function
+	// -----------------------------------------------------
+
+
+	double prev = 0;
+	int deltaFrame = 0;
+	//fps function
+	auto fps = [&](double now) {
+		double deltaTime = now - prev;
+		deltaFrame++;
+		if (deltaTime > 0.5) {
+			prev = now;
+			const double fpsCount = (double)deltaFrame / deltaTime;
+			deltaFrame = 0;
+			std::cout << "\r FPS: " << fpsCount;
+			std::cout.flush();
+		}
+	};
+
+	glm::vec3 light_pos = glm::vec3(1.0, 2.0, 1.5);
+	glm::mat4 view = camera.GetViewMatrix();
+	glm::mat4 perspective = camera.GetProjectionMatrix(45.0, 16./9., 0.01, 100.0);//get the perspective in 16/9 ratio 
+	
 
 	glfwSwapInterval(1);
 
-	
+
+	// -----------------------------------------------------
+	// MAIN LOOP
+	// -----------------------------------------------------
+
 
 	while (!glfwWindowShouldClose(window)) {
+
+		// --------------------------------------------
+		// Time operations
+		// --------------------------------------------
+
+		double now = glfwGetTime();
+		auto delta = light_pos + glm::vec3(0.0, 0.0, 2 * std::sin(now));
+		fps(now);
+
+		// --------------------------------------------
+		// ...
+		// --------------------------------------------
 
 		processInput(window);
 		view = camera.GetViewMatrix();
 		glfwPollEvents();
-		double now = glfwGetTime();
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// sphere1.model = glm::rotate(sphere1.model, glm::radians((float)(1.0)), glm::vec3(1.0, 1.0, 0.0));
-		sphere1.model = glm::translate(sphere1.model, glm::vec3(0.0, 0.0, 20.0));
-		sphere1.model = glm::rotate(sphere1.model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
-		sphere1.model = glm::translate(sphere1.model, glm::vec3(0.0, 0.0, -20.0));
-		
+		// --------------------------------------------
+		// sphere 1 operations
+		// --------------------------------------------
 
-		shader.use();
+		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, 20.0));
+		earth.model = glm::rotate(earth.model, glm::radians((float)(1.0)), glm::vec3(0.0, 1.0, 0.0));
+		earth.model = glm::translate(earth.model, glm::vec3(0.0, 0.0, -20.0));
+		earthShader.use();
+		earthShader.setMatrix4("M", earth.model);
+		earthShader.setMatrix4("itM", inverseModel);
+		earthShader.setMatrix4("V", view);
+		earthShader.setMatrix4("P", perspective);
+		earthShader.setVector3f("u_view_pos", camera.Position);
+		earth.draw();
 
-		shader.setMatrix4("M", sphere1.model);
-		shader.setMatrix4("itM", inverseModel);
-		shader.setMatrix4("V", view);
-		shader.setMatrix4("P", perspective);
-		shader.setVector3f("u_view_pos", camera.Position);
+		// --------------------------------------------
+		// sphere 2 operations
+		// --------------------------------------------
 
+		earthShader.setMatrix4("M", sun.model);
+		sun.draw();
 
-		auto delta = light_pos + glm::vec3(0.0, 0.0, 2 * std::sin(now));
-
-
+		// --------------------------------------------
+		// cubeMap operations
+		// --------------------------------------------
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTexture);
 		cubeMapShader.setInteger("cubemapTexture", 0);
-
-
 		glDepthFunc(GL_LEQUAL);
-		sphere1.draw();
-
-		shader.setMatrix4("M", sphere2.model);
-		// shader.setMatrix4("itM", glm::inverseTranspose(sphere2.model));
-		sphere2.draw();
-
-
 		cubeMapShader.use();
 		cubeMapShader.setMatrix4("V", view);
 		cubeMapShader.setMatrix4("P", perspective);
 		cubeMapShader.setInteger("cubemapTexture", 0);
-
 		cubeMap.draw();
 		glDepthFunc(GL_LESS);
 
-		fps(now);
+		// --------------------------------------------
+		// Swap buffers
+		// --------------------------------------------
+
 		glfwSwapBuffers(window);
 	}
 
-	//clean up ressource
+	// --------------------------------------------
+	// clean up ressource and END
+	// --------------------------------------------
+
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
@@ -433,10 +503,7 @@ int main(int argc, char* argv[]){
 
 
 
-
-
-void loadCubemapFace(const char* path, const GLenum& targetFace)
-{
+void loadCubemapFace(const char* path, const GLenum& targetFace){
 	int imWidth, imHeight, imNrChannels;
 	unsigned char* data = stbi_load(path, &imWidth, &imHeight, &imNrChannels, 0);
 	if (data)
@@ -459,8 +526,7 @@ void loadCubemapFace(const char* path, const GLenum& targetFace)
 
 
 
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
-{
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn){
 	float xpos = static_cast<float>(xposIn);
 	float ypos = static_cast<float>(yposIn);
 

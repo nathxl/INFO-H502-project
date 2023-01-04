@@ -1,7 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include<iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -12,7 +12,7 @@
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
-#include<glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 /*Principe :
