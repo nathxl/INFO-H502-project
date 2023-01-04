@@ -24,6 +24,7 @@
 #include "object.h"
 #include "windowManager.h"
 
+
 #include <math.h>
 #include <time.h>
 
@@ -75,9 +76,54 @@ int main(int argc, char* argv[]){
 
 	// Shader earthShader = Shader(celestialBodiesVertexShader, celestialBodiesFragmentShader);
 
-	Shader earthShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
+	// Shader earthShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
+
+	// earthShader.use();
+	// earthShader.setFloat("shininess", 32.0f);
+	// earthShader.setVector3f("materialColour", earthColour);
+	// earthShader.setFloat("light.ambient_strength", earthAmbient);
+	// earthShader.setFloat("light.diffuse_strength", earthDiffuse);
+	// earthShader.setFloat("light.specular_strength", earthSpecular);
+	// earthShader.setFloat("light.constant", 1.0);
+	// earthShader.setFloat("light.linear", 0.14);
+	// earthShader.setFloat("light.quadratic", 0.07);
+	// earthShader.setFloat("refractionIndice", 1.52);
+	
+
+	// TEXTURE LOADING FOR EARTH
+	unsigned int texture1;
+    // texture 1
+    // ---------
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1); 
+     // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+    int width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+    unsigned char *data = stbi_load("../../src/textures/planets/earth.jpg", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout << "Texture loaded" << std::endl;
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+   
+
+	Shader earthShader = Shader(shaders.TextureVertexShader, shaders.TextureFragmentShader);
 
 	earthShader.use();
+	
 	earthShader.setFloat("shininess", 32.0f);
 	earthShader.setVector3f("materialColour", earthColour);
 	earthShader.setFloat("light.ambient_strength", earthAmbient);
@@ -273,6 +319,10 @@ int main(int argc, char* argv[]){
 		earthShader.setMatrix4("V", view);
 		earthShader.setMatrix4("P", perspective);
 		earthShader.setVector3f("u_view_pos", wm.camera.Position);
+		glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+		
+
 		earth.draw();
 		earth.model = glm::translate(earth.model, glm::vec3(x1, 0.0, -y1));
 
@@ -312,9 +362,9 @@ int main(int argc, char* argv[]){
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTexture);
-		cubeMapShader.setInteger("cubemapTexture", 0);
-		glDepthFunc(GL_LEQUAL);
 		cubeMapShader.use();
+		cubeMapShader.setInteger("cubemapTexture", 0);
+		glDepthFunc(GL_LEQUAL);		
 		cubeMapShader.setMatrix4("V", view);
 		cubeMapShader.setMatrix4("P", perspective);
 		cubeMapShader.setInteger("cubemapTexture", 0);
