@@ -42,8 +42,11 @@ bool firstMouse = true;
 float lastX = 0.0;
 float lastY = 0.0;
 
-Shaders shaders;
+double prev = 0;
+int deltaFrame = 0;
 
+Shaders shaders;
+Camera camera(glm::vec3(0.0, 0.0, 10.0));
 
 
 
@@ -56,7 +59,8 @@ GLuint compileShader(std::string shaderCode, GLenum shaderType);
 GLuint compileProgram(GLuint vertexShader, GLuint fragmentShader);
 void processInput(GLFWwindow* window);
 void loadCubemapFace(const char* file, const GLenum& targetCube);
-Camera camera(glm::vec3(0.0, 0.0, 10.0));
+void my_fps(double now);
+
 
 
 
@@ -273,26 +277,6 @@ int main(int argc, char* argv[]){
 	}
 
 
-	// -----------------------------------------------------
-	// FPS function
-	// -----------------------------------------------------
-
-
-	double prev = 0;
-	int deltaFrame = 0;
-	//fps function
-	auto fps = [&](double now) {
-		double deltaTime = now - prev;
-		deltaFrame++;
-		if (deltaTime > 0.5) {
-			prev = now;
-			const double fpsCount = (double)deltaFrame / deltaTime;
-			deltaFrame = 0;
-			std::cout << "\r FPS: " << fpsCount;
-			std::cout.flush();
-		}
-	};
-
 	glm::vec3 light_pos = glm::vec3(1.0, 2.0, 1.5);
 	glm::mat4 view = camera.GetViewMatrix();
 	glm::mat4 perspective = camera.GetProjectionMatrix(45.0, 16./9., 0.01, 100.0);//get the perspective in 16/9 ratio 
@@ -314,7 +298,7 @@ int main(int argc, char* argv[]){
 
 		double now = glfwGetTime();
 		auto delta = light_pos + glm::vec3(0.0, 0.0, 2 * std::sin(now));
-		fps(now);
+		my_fps(now);
 
 		// --------------------------------------------
 		// ...
@@ -386,6 +370,18 @@ int main(int argc, char* argv[]){
 }
 
 
+
+void my_fps(double now){
+	double deltaTime = now - prev;
+	deltaFrame++;
+	if (deltaTime > 0.5) {
+		prev = now;
+		const double fpsCount = (double)deltaFrame / deltaTime;
+		deltaFrame = 0;
+		std::cout << "\r FPS: " << fpsCount;
+		std::cout.flush();
+	}
+}
 
 
 
