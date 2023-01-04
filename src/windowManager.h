@@ -67,7 +67,7 @@ class WindowManager{
 
 
         WindowManager(){
-            std::cout << "Hello from the window manager : " << width << std::endl;
+            std::cout << "Hello from the window manager : " << std::endl;
         }
 
 
@@ -160,7 +160,7 @@ class WindowManager{
             camera.ProcessMouseMovement(xoffset, yoffset);
         }
 
-        void processInput(GLFWwindow* window) {
+        void processInput() {
             //3. Use the cameras class to change the parameters of the camera
             if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
                 glfwSetWindowShouldClose(window, true);
