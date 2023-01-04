@@ -42,8 +42,8 @@ Shaders shaders;
 // DECLARATIONS
 // ---------------------------------------------------------------------------
 
-GLuint compileShader(std::string shaderCode, GLenum shaderType);
-GLuint compileProgram(GLuint vertexShader, GLuint fragmentShader);
+// GLuint compileShader(std::string shaderCode, GLenum shaderType);
+// GLuint compileProgram(GLuint vertexShader, GLuint fragmentShader);
 
 
 
@@ -181,7 +181,7 @@ int main(int argc, char* argv[]){
 		// --------------------------------------------
 
 		double now = glfwGetTime();
-		auto delta = light_pos + glm::vec3(0.0, 0.0, 2 * std::sin(now));
+		// auto delta = light_pos + glm::vec3(0.0, 0.0, 2 * std::sin(now));
 		wm.my_fps(now);
 
 		// --------------------------------------------
