@@ -190,7 +190,6 @@ class Shaders{
             "FragColor = mix(texture(texture1, longitudeLatitude.xy),vec4(light),.5) ; \n"
             "} \n"
         ;
-        ;
 
 };
 
