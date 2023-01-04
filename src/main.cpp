@@ -312,8 +312,10 @@ int main(int argc, char* argv[]){
 		// --------------------------------------------
 
 		
-		// earth.model = glm::rotate(earth.model, glm::radians((float)(1.0)), glm::vec3(0.0, now, 0.0));
+		
 		earth.model = glm::translate(earth.model, glm::vec3(-x1, 0.0, y1));
+		earth.model = glm::rotate(earth.model, glm::radians((float)(200.0 * now)), glm::vec3(0.0, 1.0, 0.0));
+
 		earthShader.use();
 		earthShader.setMatrix4("M", earth.model);
 		earthShader.setMatrix4("itM", inverseModel);
@@ -323,8 +325,9 @@ int main(int argc, char* argv[]){
 		glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
 		
-
 		earth.draw();
+
+		earth.model = glm::rotate(earth.model, glm::radians((float)(- 200.0 * now)), glm::vec3(0.0, 1.0, 0.0));
 		earth.model = glm::translate(earth.model, glm::vec3(x1, 0.0, -y1));
 
 		// --------------------------------------------
