@@ -223,6 +223,7 @@ int main(int argc, char* argv[]){
 
 	std::string pathToCubeMap = "../../src/textures/cubemaps/space/";
 
+	
 	std::map<std::string, GLenum> facesToLoad = {
 		{pathToCubeMap + "posx.jpg",GL_TEXTURE_CUBE_MAP_POSITIVE_X},
 		{pathToCubeMap + "posy.jpg",GL_TEXTURE_CUBE_MAP_POSITIVE_Y},
