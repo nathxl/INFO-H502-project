@@ -37,6 +37,7 @@
 Shaders shaders;
 
 int animationFrame = 0;
+int animationIndex = 0;
 
 
 
@@ -76,6 +77,29 @@ int main(int argc, char* argv[]){
 	loadTexture(earthTexture1, "../../src/textures/planets/earth1.jpg");
 	GLuint earthTexture2;
 	loadTexture(earthTexture2, "../../src/textures/planets/earth2.jpg");
+
+	GLuint sunTextures[20];
+	loadTexture(sunTextures[0], "../../src/textures/planets/ezgif-frame-001.jpg");
+	loadTexture(sunTextures[1], "../../src/textures/planets/ezgif-frame-002.jpg");
+	loadTexture(sunTextures[2], "../../src/textures/planets/ezgif-frame-003.jpg");
+	loadTexture(sunTextures[3], "../../src/textures/planets/ezgif-frame-004.jpg");
+	loadTexture(sunTextures[4], "../../src/textures/planets/ezgif-frame-005.jpg");
+	loadTexture(sunTextures[5], "../../src/textures/planets/ezgif-frame-006.jpg");
+	loadTexture(sunTextures[6], "../../src/textures/planets/ezgif-frame-007.jpg");
+	loadTexture(sunTextures[7], "../../src/textures/planets/ezgif-frame-008.jpg");
+	loadTexture(sunTextures[8], "../../src/textures/planets/ezgif-frame-009.jpg");
+	loadTexture(sunTextures[9], "../../src/textures/planets/ezgif-frame-010.jpg");
+	loadTexture(sunTextures[10], "../../src/textures/planets/ezgif-frame-011.jpg");
+	loadTexture(sunTextures[11], "../../src/textures/planets/ezgif-frame-012.jpg");
+	loadTexture(sunTextures[12], "../../src/textures/planets/ezgif-frame-013.jpg");
+	loadTexture(sunTextures[13], "../../src/textures/planets/ezgif-frame-014.jpg");
+	loadTexture(sunTextures[14], "../../src/textures/planets/ezgif-frame-015.jpg");
+	loadTexture(sunTextures[15], "../../src/textures/planets/ezgif-frame-016.jpg");
+	loadTexture(sunTextures[16], "../../src/textures/planets/ezgif-frame-017.jpg");
+	loadTexture(sunTextures[17], "../../src/textures/planets/ezgif-frame-018.jpg");
+	loadTexture(sunTextures[18], "../../src/textures/planets/ezgif-frame-019.jpg");
+	loadTexture(sunTextures[19], "../../src/textures/planets/ezgif-frame-020.jpg");
+	
 
 	GLuint sunTexture1;
 	loadTexture(sunTexture1, "../../src/textures/planets/ezgif-frame-001.jpg");
@@ -266,10 +290,16 @@ int main(int argc, char* argv[]){
 
 	while (!glfwWindowShouldClose(wm.window)) {
 		animationFrame++;
-		animationFrame++;
-		if (animationFrame > 100){
+		// animationFrame++;
+		
+		if (animationFrame > 5){
 			animationFrame = 0;
+			animationIndex++;
+			if (animationIndex > 19){
+				animationIndex = 0;
+			}
 		}
+		
 
 		// --------------------------------------------
 		// Time operations
@@ -378,49 +408,8 @@ int main(int argc, char* argv[]){
 		sunShader.setMatrix4("V", view);
 		sunShader.setMatrix4("P", perspective);
 		sunShader.setVector3f("u_view_pos", wm.camera.Position);
-		glBindTexture(GL_TEXTURE_2D, sunTexture1);
-		if (animationFrame <= 5){
-			glBindTexture(GL_TEXTURE_2D, sunTexture1);
-		} else if(animationFrame > 5 && animationFrame <= 10) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture2);
-		} else if(animationFrame > 10 && animationFrame <= 15) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture3);
-		} else if(animationFrame > 15 && animationFrame <= 20) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture4);
-		} else if(animationFrame > 20 && animationFrame <= 25) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture5);
-		} else if(animationFrame > 25 && animationFrame <= 30) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture6);
-		} else if(animationFrame > 30 && animationFrame <= 35) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture7);
-		} else if(animationFrame > 35 && animationFrame <= 40) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture8);
-		} else if(animationFrame > 40 && animationFrame <= 45) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture9);
-		} else if(animationFrame > 45 && animationFrame <= 50) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture10);
-		} else if(animationFrame > 50 && animationFrame <= 55) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture11);
-		} else if(animationFrame > 55 && animationFrame <= 60) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture12);
-		} else if(animationFrame > 60 && animationFrame <= 65) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture13);
-		} else if(animationFrame > 65 && animationFrame <= 70) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture14);
-		} else if(animationFrame > 70 && animationFrame <= 75) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture15);
-		} else if(animationFrame > 75 && animationFrame <= 80) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture16);
-		} else if(animationFrame > 80 && animationFrame <= 85) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture17);
-		} else if(animationFrame > 85 && animationFrame <= 90) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture18);
-		} else if(animationFrame > 90 && animationFrame <= 95) {
-			glBindTexture(GL_TEXTURE_2D, sunTexture19);
-		} else {
-			glBindTexture(GL_TEXTURE_2D, sunTexture20);
-		}
 
+		glBindTexture(GL_TEXTURE_2D, sunTextures[animationIndex]);
 		sun.draw();
 
 		// --------------------------------------------
