@@ -44,6 +44,7 @@ public:
 	GLuint VBO, VAO;
 
 	glm::mat4 model = glm::mat4(1.0);
+	glm::mat4 inverseModel = glm::mat4(1.0);
 
 
 	Object(const char* path) {

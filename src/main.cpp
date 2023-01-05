@@ -676,9 +676,9 @@ int main(int argc, char* argv[]){
 	// -----------------------------------------------------
 
    
-	float earthAmbient = 0.2;
-	float earthDiffuse = 0.5;
-	float earthSpecular = 0.8;
+	float earthAmbient = 0.0;
+	float earthDiffuse = 0.9;
+	float earthSpecular = 0.1;
 	glm::vec3 earthColour = glm::vec3(0.5f, 0.6, 0.8);
 
 	Shader earthShader = Shader(shaders.TextureVertexShader, shaders.TextureFragmentShader);
@@ -699,6 +699,7 @@ int main(int argc, char* argv[]){
 	Object earth(path_to_sphere_obj);
 	earth.makeObject(earthShader);
 	glm::mat4 inverseModel = glm::transpose(glm::inverse(earth.model));
+	earth.inverseModel = inverseModel;
 
 
 	// -----------------------------------------------------
@@ -707,7 +708,7 @@ int main(int argc, char* argv[]){
 
 	float moonAmbient = 0.2;
 	float moonDiffuse = 0.5;
-	float moonSpecular = 0.8;
+	float moonSpecular = 1.;
 	glm::vec3 moonColour = glm::vec3(0.6f, 0.6, 0.6);
 
 	Shader moonShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
@@ -725,7 +726,9 @@ int main(int argc, char* argv[]){
 	
 	Object moon(path_to_sphere_obj);
 	moon.makeObject(moonShader);
-	inverseModel = glm::transpose(glm::inverse(moon.model));
+	moon.inverseModel = glm::transpose(glm::inverse(moon.model));
+	
+	
 	
 
 
@@ -756,6 +759,7 @@ int main(int argc, char* argv[]){
 	Object sun(path_to_sphere_obj);
 	sun.makeObject(sunShader);
 	sun.model = glm::scale(sun.model, glm::vec3(3.0, 3.0, 3.0));
+	sun.inverseModel = glm::transpose(glm::inverse(sun.model));
 
 
 	// -----------------------------------------------------
@@ -799,7 +803,7 @@ int main(int argc, char* argv[]){
 	}
 
 
-	glm::vec3 light_pos = glm::vec3(1.0, 2.0, 1.5);
+	glm::vec3 light_pos = glm::vec3(.0, .0, .5);
 	glm::mat4 view = wm.camera.GetViewMatrix();
 	glm::mat4 perspective = wm.camera.GetProjectionMatrix(45.0, 16./9., 0.01, 100.0);//get the perspective in 16/9 ratio 
 	
@@ -880,13 +884,15 @@ int main(int argc, char* argv[]){
 		
 		earth.model = glm::translate(earth.model, glm::vec3(-x1, 0.0, y1));
 		earth.model = glm::rotate(earth.model, glm::radians((float)(200.0 * now)), glm::vec3(0.0, 1.0, 0.0));
+		earth.inverseModel = glm::transpose( glm::inverse(earth.model));
 
 		earthShader.use();
 		earthShader.setMatrix4("M", earth.model);
-		earthShader.setMatrix4("itM", inverseModel);
+		earthShader.setMatrix4("itM", earth.inverseModel);
 		earthShader.setMatrix4("V", view);
 		earthShader.setMatrix4("P", perspective);
 		earthShader.setVector3f("u_view_pos", wm.camera.Position);
+		earthShader.setVector3f("u_light_pos", light_pos);
 
 		glBindTexture(GL_TEXTURE_2D, earthTexture2);
 		
@@ -902,9 +908,10 @@ int main(int argc, char* argv[]){
 
 		moon.model = glm::translate(moon.model, glm::vec3(-xr, 0.0, yr));
 		moon.model = glm::scale(moon.model, glm::vec3(0.5, 0.5, 0.5));
+		moon.inverseModel = glm::transpose(glm::inverse(moon.model));
 		moonShader.use();
 		moonShader.setMatrix4("M", moon.model);
-		moonShader.setMatrix4("itM", inverseModel);
+		moonShader.setMatrix4("itM", moon.inverseModel);
 		moonShader.setMatrix4("V", view);
 		moonShader.setMatrix4("P", perspective);
 		moonShader.setVector3f("u_view_pos", wm.camera.Position);
@@ -919,7 +926,7 @@ int main(int argc, char* argv[]){
 
 		sunShader.use();
 		sunShader.setMatrix4("M", sun.model);
-		sunShader.setMatrix4("itM", inverseModel);
+		sunShader.setMatrix4("itM", sun.inverseModel);
 		sunShader.setMatrix4("V", view);
 		sunShader.setMatrix4("P", perspective);
 		sunShader.setVector3f("u_view_pos", wm.camera.Position);

@@ -123,6 +123,7 @@ class Shaders{
 
             "out vec3 v_frag_coord; \n"
             "out vec3 v_normal; \n"
+            "out vec3 pos; \n"
 
             "uniform mat4 M; \n"
             "uniform mat4 itM; \n"
@@ -134,7 +135,8 @@ class Shaders{
             "vec4 frag_coord = M*vec4(position, 1.0); \n"
             "gl_Position = P*V*frag_coord; \n"
             "v_normal = vec3(itM * vec4(normal, 1.0)); \n"
-            "v_frag_coord = position.xyz; \n"
+            "v_frag_coord = frag_coord.xyz; \n"
+            "pos = position; \n"
             "\n"
             "}\n"
         ;  
@@ -146,6 +148,7 @@ class Shaders{
 
             "in vec3 v_frag_coord; \n"
             "in vec3 v_normal; \n"
+            "in vec3 pos; \n"
 
             "uniform vec3 u_view_pos; \n"
 
@@ -185,9 +188,9 @@ class Shaders{
             "float attenuation = 1 / (light.constant + light.linear * distance + light.quadratic * distance * distance);"
             "float light = light.ambient_strength + attenuation * (diffuse + specular); \n"
             //convert to specific coordinates
-            "vec2 longitudeLatitude = vec2((atan(v_frag_coord.z, v_frag_coord.x) / 3.1415926 + 1.0) * 0.5, (asin(v_frag_coord.y) / 3.1415926 + 0.5)); \n"
+            "vec2 longitudeLatitude = vec2((atan(pos.z, pos.x) / 3.1415926 + 1.0) * 0.5, (asin(pos.y) / 3.1415926 + 0.5)); \n"
             "longitudeLatitude = longitudeLatitude ; \n"
-            "FragColor = mix(texture(texture1, longitudeLatitude.xy),vec4(light),.5) ; \n"
+            "FragColor = mix(texture(texture1, longitudeLatitude.xy),vec4(diffuse),.5) ; \n"
             "} \n"
         ;
 
