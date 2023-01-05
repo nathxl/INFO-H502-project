@@ -38,6 +38,7 @@ Shaders shaders;
 
 int animationFrame = 0;
 int animationIndex = 0;
+int animationDirection = 1;
 
 
 
@@ -99,49 +100,6 @@ int main(int argc, char* argv[]){
 	loadTexture(sunTextures[17], "../../src/textures/planets/ezgif-frame-018.jpg");
 	loadTexture(sunTextures[18], "../../src/textures/planets/ezgif-frame-019.jpg");
 	loadTexture(sunTextures[19], "../../src/textures/planets/ezgif-frame-020.jpg");
-	
-
-	GLuint sunTexture1;
-	loadTexture(sunTexture1, "../../src/textures/planets/ezgif-frame-001.jpg");
-	GLuint sunTexture2;
-	loadTexture(sunTexture2, "../../src/textures/planets/ezgif-frame-002.jpg");
-	GLuint sunTexture3;
-	loadTexture(sunTexture3, "../../src/textures/planets/ezgif-frame-003.jpg");
-	GLuint sunTexture4;
-	loadTexture(sunTexture4, "../../src/textures/planets/ezgif-frame-004.jpg");
-	GLuint sunTexture5;
-	loadTexture(sunTexture5, "../../src/textures/planets/ezgif-frame-005.jpg");
-	GLuint sunTexture6;
-	loadTexture(sunTexture6, "../../src/textures/planets/ezgif-frame-006.jpg");
-	GLuint sunTexture7;
-	loadTexture(sunTexture7, "../../src/textures/planets/ezgif-frame-007.jpg");
-	GLuint sunTexture8;
-	loadTexture(sunTexture8, "../../src/textures/planets/ezgif-frame-008.jpg");
-	GLuint sunTexture9;
-	loadTexture(sunTexture9, "../../src/textures/planets/ezgif-frame-009.jpg");
-	GLuint sunTexture10;
-	loadTexture(sunTexture10, "../../src/textures/planets/ezgif-frame-010.jpg");
-	GLuint sunTexture11;
-	loadTexture(sunTexture11, "../../src/textures/planets/ezgif-frame-011.jpg");
-	GLuint sunTexture12;
-	loadTexture(sunTexture12, "../../src/textures/planets/ezgif-frame-012.jpg");
-	GLuint sunTexture13;
-	loadTexture(sunTexture13, "../../src/textures/planets/ezgif-frame-013.jpg");
-	GLuint sunTexture14;
-	loadTexture(sunTexture14, "../../src/textures/planets/ezgif-frame-014.jpg");
-	GLuint sunTexture15;
-	loadTexture(sunTexture15, "../../src/textures/planets/ezgif-frame-015.jpg");
-	GLuint sunTexture16;
-	loadTexture(sunTexture16, "../../src/textures/planets/ezgif-frame-016.jpg");
-	GLuint sunTexture17;
-	loadTexture(sunTexture17, "../../src/textures/planets/ezgif-frame-017.jpg");
-	GLuint sunTexture18;
-	loadTexture(sunTexture18, "../../src/textures/planets/ezgif-frame-018.jpg");
-	GLuint sunTexture19;
-	loadTexture(sunTexture19, "../../src/textures/planets/ezgif-frame-019.jpg");
-	GLuint sunTexture20;
-	loadTexture(sunTexture20, "../../src/textures/planets/ezgif-frame-020.jpg");
-
 
 	// -----------------------------------------------------
 	// Earth Initialization
@@ -294,12 +252,12 @@ int main(int argc, char* argv[]){
 		
 		if (animationFrame > 5){
 			animationFrame = 0;
-			animationIndex++;
-			if (animationIndex > 19){
-				animationIndex = 0;
+			animationIndex += animationDirection;
+			if (animationIndex > 18 || animationIndex < 1){
+				animationDirection = - animationDirection;				
 			}
 		}
-		
+
 
 		// --------------------------------------------
 		// Time operations
