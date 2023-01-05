@@ -190,7 +190,7 @@ class Shaders{
             //convert to specific coordinates
             "vec2 longitudeLatitude = vec2((atan(pos.z, pos.x) / 3.1415926 + 1.0) * 0.5, (asin(pos.y) / 3.1415926 + 0.5)); \n"
             "longitudeLatitude = longitudeLatitude ; \n"
-            "FragColor = mix(texture(texture1, longitudeLatitude.xy),vec4(light),.5) ; \n"
+            "FragColor = mix(texture(texture1, longitudeLatitude.xy),vec4(diffuse),.5) ; \n"
             "} \n"
         ;
 
