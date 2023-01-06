@@ -194,6 +194,77 @@ class Shaders{
             "} \n"
         ;
 
+
+
+
+        const std::string ParticleV = "#version 330 core\n"
+		"in vec3 position; \n"
+		"in vec2 tex_coords; \n"
+		"in vec3 normal; \n"
+		"in vec3 offset; \n"
+
+		"out vec3 v_frag_coord; \n"
+		"out vec3 v_normal; \n"
+
+		"uniform mat4 M; \n"
+		"uniform mat4 itM; \n"
+		"uniform mat4 V; \n"
+		"uniform mat4 P; \n"
+
+
+		" void main(){ \n"
+		
+		"vec4 frag_coord = M*vec4(position+ offset, 1.0); \n"
+		"gl_Position = P*V*frag_coord; \n"
+		"v_normal = vec3(itM * vec4(normal, 1.0)); \n"
+		"v_frag_coord = frag_coord.xyz; \n"
+		"\n"
+		"}\n";
+
+	    const std::string ParticleF = "#version 400 core\n"
+		"out vec4 FragColor;\n"
+		"precision mediump float; \n"
+
+		"in vec3 v_frag_coord; \n"
+		"in vec3 v_normal; \n"
+
+		"uniform vec3 u_view_pos; \n"
+
+		"uniform samplerCube cubemapSampler; \n"
+		"uniform float refractionIndice;\n"
+
+
+
+
+		//In GLSL you can use structures to better organize your code
+		//light
+		"struct Light{\n" 
+		"vec3 light_pos; \n"
+		"float ambient_strength; \n"
+		"float diffuse_strength; \n"
+		"float specular_strength; \n"
+		//attenuation factor
+		"float constant;\n"
+		"float linear;\n"
+		"float quadratic;\n"
+		"};\n"
+		"uniform Light light;"
+
+		"uniform float shininess; \n"
+		"uniform vec3 materialColour; \n"
+		"uniform float alpha; \n"
+
+
+
+
+		"void main() { \n"
+		
+
+
+		//
+		"FragColor = vec4(materialColour , alpha*0.8) ; \n"
+		"} \n";
 };
+
 
 #endif

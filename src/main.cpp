@@ -52,6 +52,77 @@ int animationDirection = 1;
 
 void loadTexture(GLuint &texture, const char* path);
 
+
+
+struct Particle {
+  glm::vec3 position;     // Position
+  glm::vec3 velocity;   // Velocity
+  glm::vec4 color;  // Color
+  float size;     // Size
+  float life;     // Remaining life of the particle. if < 0 : dead and unused.
+};
+
+const int NUM_PARTICLES = 1000;  // Number of particles
+Particle particles[NUM_PARTICLES];  // Array of particles
+glm::vec3 emitterPosition = glm::vec3(0.0f, 0.0f, -1.0f);  // Position of the emitter
+glm::vec3 emitterVelocity = glm::vec3(0.0f, 0.0f, 0.0f);  // Velocity of the emitter
+
+Particle resetParticle(Particle p) {
+  	
+  	p.position.x = emitterPosition.x + (float)rand() / RAND_MAX * 0.1f;
+	p.position.y = emitterPosition.y + (float)rand() / RAND_MAX * 0.1f;
+	p.position.z = emitterPosition.z + (float)rand() / RAND_MAX * 0.1f;
+
+	p.velocity.x = -emitterVelocity.x  * (float)rand() / RAND_MAX *0.001f ;
+	p.velocity.y = -emitterVelocity.y  * (float)rand() / RAND_MAX *0.001f ;
+	p.velocity.z = -emitterVelocity.z  * (float)rand() / RAND_MAX *0.001f ;
+	
+	p.color = glm::vec4(1., 1. ,1. , 1.0f);
+	p.size = 0.02f ;//* (float)rand() / RAND_MAX;
+	p.life = 1.0f +1.0f * (float)rand() / RAND_MAX ;
+  	return p;
+}
+
+void initParticles() {
+  for (int i = 0; i < NUM_PARTICLES; i++) {
+    // Set initial position, velocity, and color for the particle
+	
+	particles[i] = resetParticle(particles[i]);
+  }
+}
+
+
+
+
+void updateParticles() {
+  for (int i = 0; i < NUM_PARTICLES; i++) {
+    // Update the position of the particle based on its velocity
+
+	Particle p = particles[i];
+
+	if (p.life < 0.0f) {
+
+		p = resetParticle(p);
+	}
+    p.position.x += particles[i].velocity.x;
+    p.position.y += particles[i].velocity.y;
+	p.position.z += particles[i].velocity.z;
+
+	// Update the life of the particle
+	p.life -= 0.005f;
+
+    // Add some gravity to the particles
+    //p.velocity.y -= 0.0001f;
+	particles[i] = p;
+  }
+}
+
+
+
+
+
+
+
 // ---------------------------------------------------------------------------
 // MAIN
 // ---------------------------------------------------------------------------
@@ -157,6 +228,25 @@ int main(int argc, char* argv[]){
 	Object moon(path_to_sphere_obj);
 	moon.makeObject(moonShader);
 	moon.inverseModel = glm::transpose(glm::inverse(moon.model));
+
+
+	Shader cometShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
+	cometShader.use();
+	cometShader.setFloat("shininess", 32.0f);
+	cometShader.setVector3f("materialColour", moonColour);
+	cometShader.setFloat("light.ambient_strength", moonAmbient);
+	cometShader.setFloat("light.diffuse_strength", moonDiffuse);
+	cometShader.setFloat("light.specular_strength", moonSpecular);
+	cometShader.setFloat("light.constant", 1.0);
+	cometShader.setFloat("light.linear", 0.14);
+	cometShader.setFloat("light.quadratic", 0.07);
+	cometShader.setFloat("refractionIndice", 1.52);
+
+
+	Object comet("../../src/objects/comet.obj");
+	comet.makeObject(cometShader);
+	comet.inverseModel = glm::transpose(glm::inverse(comet.model));
+	comet.model = glm::translate(comet.model, emitterPosition);
 	
 	
 	
@@ -231,6 +321,12 @@ int main(int argc, char* argv[]){
 	for (std::pair<std::string, GLenum> pair : facesToLoad) {
 		wm.loadCubemapFace(pair.first.c_str(), pair.second);
 	}
+
+
+	initParticles();
+	Shader particleShader = Shader(shaders.ParticleV, shaders.ParticleF);
+	Object Plane1("C:\\Users\\axelk\\Documents\\ULB\\Virtual Reality\\info-h502_202223\\LAB03\\objects\\plane.obj");
+	Plane1.makeObject(particleShader,true);
 
 
 	glm::vec3 light_pos = glm::vec3(.0, .0, .5);
@@ -384,6 +480,76 @@ int main(int argc, char* argv[]){
 		cubeMapShader.setInteger("cubemapTexture", 0);
 		cubeMap.draw();
 		glDepthFunc(GL_LESS);
+
+
+
+
+		// --------------------------------------------
+		// Comet Operations
+
+		comet.model = glm::inverse(glm::lookAt( emitterPosition, glm::vec3(.0,.0,.0), glm::vec3(0.0, 1.0, 0.0)));
+		comet.model = glm::scale(comet.model, glm::vec3(0.4, 0.4, 0.4));
+		comet.inverseModel = glm::transpose(glm::inverse(moon.model));
+		
+		cometShader.use();
+		cometShader.setMatrix4("M", comet.model);
+		cometShader.setMatrix4("itM", comet.inverseModel);
+		cometShader.setMatrix4("V", view);
+		cometShader.setMatrix4("P", perspective);
+		cometShader.setVector3f("u_view_pos", wm.camera.Position);
+		comet.draw();
+
+
+
+		// --------------------------------------------
+		// Particle Operations
+
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
+		particleShader.use();
+		
+
+		emitterPosition.x = sin(now/10) * 12.0f;
+		emitterVelocity.x = cos(now/10) * 12.0f;
+		emitterPosition.y = cos(now/10) * 12.0f;
+		emitterVelocity.y = -sin(now/10) * 12.0f;
+		emitterPosition.z = sin(now/10) * 12.0f;
+		emitterVelocity.z = cos(now/10) * 12.0f;
+		
+		updateParticles();
+
+		for (int i = 0; i < NUM_PARTICLES; i++) {
+			Particle p = particles[i];
+			
+			
+			
+			//Plane1.model = glm::translate(Plane1.model, p.position);
+			
+			
+			Plane1.model = glm::inverse(glm::lookAt( p.position, wm.camera.Position, glm::vec3(0.0, 1.0, 0.0)));
+			Plane1.model = glm::rotate(Plane1.model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
+			Plane1.model = glm::scale(Plane1.model, glm::vec3(p.size, p.size,p.size));
+
+
+			particleShader.setVector3f("materialColour", p.color );
+			particleShader.setFloat("alpha", p.life *.5);
+			particleShader.setMatrix4("M", Plane1.model);
+			particleShader.setMatrix4("itM", glm::transpose( glm::inverse(Plane1.model)));
+			particleShader.setMatrix4("V", view);
+			particleShader.setMatrix4("P", perspective);
+			particleShader.setVector3f("u_view_pos", wm.camera.Position);
+			particleShader.setVector3f("offset", p.position );
+
+
+			Plane1.draw();
+		}
+
+		glDisable(GL_BLEND);
+
+
+
 
 		// --------------------------------------------
 		// Swap buffers
