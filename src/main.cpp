@@ -325,7 +325,7 @@ int main(int argc, char* argv[]){
 
 	initParticles();
 	Shader particleShader = Shader(shaders.ParticleV, shaders.ParticleF);
-	Object Plane1("plane.obj");
+	Object Plane1("../../src/objects/plane.obj");
 	Plane1.makeObject(particleShader,true);
 
 
