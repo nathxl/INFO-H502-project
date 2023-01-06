@@ -325,7 +325,7 @@ int main(int argc, char* argv[]){
 
 	initParticles();
 	Shader particleShader = Shader(shaders.ParticleV, shaders.ParticleF);
-	Object Plane1("C:\\Users\\axelk\\Documents\\ULB\\Virtual Reality\\info-h502_202223\\LAB03\\objects\\plane.obj");
+	Object Plane1("plane.obj");
 	Plane1.makeObject(particleShader,true);
 
 
