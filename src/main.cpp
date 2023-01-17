@@ -418,7 +418,7 @@ int main(int argc, char* argv[]){
 		
 		
 		earth.model = glm::translate(earth.model, glm::vec3(-x1, 0.0, y1));
-		earth.model = glm::rotate(earth.model, glm::radians((float)(200.0 * now)), glm::vec3(0.0, 1.0, 0.0));
+		earth.model = glm::rotate(earth.model, glm::radians((float)(200.0 * now)), glm::vec3(0.0, 1.0, 0.2));
 		earth.inverseModel = glm::transpose( glm::inverse(earth.model));
 
 		earthShader.use();
@@ -433,7 +433,7 @@ int main(int argc, char* argv[]){
 		
 		earth.draw();
 
-		earth.model = glm::rotate(earth.model, glm::radians((float)(- 200.0 * now)), glm::vec3(0.0, 1.0, 0.0));
+		earth.model = glm::rotate(earth.model, glm::radians((float)(- 200.0 * now)), glm::vec3(0.0, 1.0, 0.2));
 		earth.model = glm::translate(earth.model, glm::vec3(x1, 0.0, -y1));
 
 		// --------------------------------------------
@@ -444,7 +444,10 @@ int main(int argc, char* argv[]){
 		moon.model = glm::translate(moon.model, glm::vec3(-xr, 0.0, yr));
 		moon.model = glm::inverse(glm::lookAt( glm::vec3(-xr,.0,yr),glm::vec3(x1, 0.0, -y1) , glm::vec3(0.0, 1.0, 0.0)));
 		moon.model = glm::scale(moon.model, glm::vec3(0.5, 0.5, 0.5));
+		moon.model = glm::rotate(moon.model, glm::radians((float)(- 200.0 * now)), glm::vec3(0.0, 1.0, 0.0));
+
 		moon.inverseModel = glm::transpose(glm::inverse(moon.model));
+
 		moonShader.use();
 		moonShader.setMatrix4("M", moon.model);
 		moonShader.setMatrix4("itM", moon.inverseModel);
@@ -455,6 +458,8 @@ int main(int argc, char* argv[]){
 		glBindTexture(GL_TEXTURE_2D, moonTexture);
 
 		moon.draw();
+
+		moon.model = glm::rotate(moon.model, glm::radians((float)(200.0 * now)), glm::vec3(0.0, 1.0, 0.0));
 		moon.model = glm::scale(moon.model, glm::vec3(2.0, 2.0, 2.0));
 		moon.model = glm::translate(moon.model, glm::vec3(xr, 0.0, -yr));
 
@@ -463,6 +468,10 @@ int main(int argc, char* argv[]){
 		// Sun Operations
 		// --------------------------------------------
 
+		sun.model = glm::rotate(sun.model, glm::radians((float)(- 20.0 * now)), glm::vec3(0.0, 1.0, 0));
+
+		sun.inverseModel = glm::transpose(glm::inverse(sun.model));
+
 		sunShader.use();
 		sunShader.setMatrix4("M", sun.model);
 		sunShader.setMatrix4("itM", sun.inverseModel);
@@ -470,8 +479,11 @@ int main(int argc, char* argv[]){
 		sunShader.setMatrix4("P", perspective);
 		sunShader.setVector3f("u_view_pos", wm.camera.Position);
 
+
 		glBindTexture(GL_TEXTURE_2D, sunTextures[animationIndex]);
 		sun.draw();
+
+		sun.model = glm::rotate(sun.model, glm::radians((float)(20.0 * now)), glm::vec3(0.0, 1.0, 0));
 
 		// --------------------------------------------
 		// CubeMap Operations
