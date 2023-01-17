@@ -150,6 +150,9 @@ int main(int argc, char* argv[]){
 	GLuint earthTexture2;
 	loadTexture(earthTexture2, "../../src/textures/planets/earth2.jpg");
 
+	GLuint moonTexture;
+	loadTexture(moonTexture, "../../src/textures/planets/moon.jpg");
+
 	GLuint sunTextures[20];
 	loadTexture(sunTextures[0], "../../src/textures/planets/ezgif-frame-001.jpg");
 	loadTexture(sunTextures[1], "../../src/textures/planets/ezgif-frame-002.jpg");
@@ -207,12 +210,12 @@ int main(int argc, char* argv[]){
 	// Moon Initialization
 	// -----------------------------------------------------
 
-	float moonAmbient = 0.2;
-	float moonDiffuse = 0.5;
-	float moonSpecular = 1.;
+	float moonAmbient = 0.;
+	float moonDiffuse = 0.9;
+	float moonSpecular = 0.1;
 	glm::vec3 moonColour = glm::vec3(0.6f, 0.6, 0.6);
 
-	Shader moonShader = Shader(shaders.celestialBodiesVertexShader, shaders.celestialBodiesFragmentShader);
+	Shader moonShader = Shader(shaders.TextureVertexShader, shaders.TextureFragmentShader);
 
 	moonShader.use();
 	moonShader.setFloat("shininess", 32.0f);
@@ -439,6 +442,7 @@ int main(int argc, char* argv[]){
 		
 
 		moon.model = glm::translate(moon.model, glm::vec3(-xr, 0.0, yr));
+		moon.model = glm::inverse(glm::lookAt( glm::vec3(-xr,.0,yr),glm::vec3(x1, 0.0, -y1) , glm::vec3(0.0, 1.0, 0.0)));
 		moon.model = glm::scale(moon.model, glm::vec3(0.5, 0.5, 0.5));
 		moon.inverseModel = glm::transpose(glm::inverse(moon.model));
 		moonShader.use();
@@ -447,6 +451,9 @@ int main(int argc, char* argv[]){
 		moonShader.setMatrix4("V", view);
 		moonShader.setMatrix4("P", perspective);
 		moonShader.setVector3f("u_view_pos", wm.camera.Position);
+
+		glBindTexture(GL_TEXTURE_2D, moonTexture);
+
 		moon.draw();
 		moon.model = glm::scale(moon.model, glm::vec3(2.0, 2.0, 2.0));
 		moon.model = glm::translate(moon.model, glm::vec3(xr, 0.0, -yr));
