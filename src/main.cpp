@@ -496,7 +496,7 @@ int main(int argc, char* argv[]){
 
 		comet.model = glm::inverse(glm::lookAt( emitterPosition, glm::vec3(.0,.0,.0), glm::vec3(0.0, 1.0, 0.0)));
 		comet.model = glm::scale(comet.model, glm::vec3(0.4, 0.4, 0.4));
-		comet.inverseModel = glm::transpose(glm::inverse(moon.model));
+		comet.inverseModel = glm::transpose(glm::inverse(comet.model));
 		
 		cometShader.use();
 		cometShader.setMatrix4("M", comet.model);

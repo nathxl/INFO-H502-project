@@ -73,7 +73,7 @@ class Shaders{
             "float distance = length(light.light_pos - v_frag_coord);"
             "float attenuation = 1 / (light.constant + light.linear * distance + light.quadratic * distance * distance);"
             "float light = light.ambient_strength + attenuation * (diffuse + specular); \n"
-            "FragColor = vec4(materialColour * vec3(light), 1.0); \n"
+            "FragColor = vec4(materialColour * vec3(diffuse), 1.0); \n"
             "} \n"
         ;
 
